@@ -82,6 +82,8 @@ int main(int argc, char **argv)
   float _y0;
   float _ax;
   float _ay;
+  float _dx;
+  float _dy;
   std::vector<double> _transverseprofile;
   std::vector<double> _energylayer;
   outtree->Branch( "evtID",&_evtID ); 
@@ -92,8 +94,10 @@ int main(int argc, char **argv)
   outtree->Branch( "vy0",&_y0 );
   outtree->Branch( "ax",&_ax );
   outtree->Branch( "ay",&_ay );
-  outtree->Branch( "transverseprofile","std::vector<double>",&_transverseprofile);
-  outtree->Branch( "energylayer","std::vector<double>",&_energylayer);
+  outtree->Branch( "dx",&_dx );
+  outtree->Branch( "dy",&_dy );
+  outtree->Branch( "transverseprofile","std::vector<double>",&_transverseprofile );
+  outtree->Branch( "energylayer","std::vector<double>",&_energylayer );
 
   for( unsigned ievt(0); ievt<nEvts; ++ievt ){
     if( ievt>maxEvents )
@@ -145,15 +149,17 @@ int main(int argc, char **argv)
       _y0 = track.vertex().y();
       _ax = track.momentum().x();
       _ay = track.momentum().y();
+      _dx = xBeam-track.vertex().x();
+      _dy = yBeam-track.vertex().y();
       Distance<HGCalHit,HGCalTrack> dist;
-       for( std::map<int,std::vector<HGCalHit> >::iterator it=hitMap.begin(); it!=hitMap.end(); ++it ){
-	 for( auto hit : it->second ){
-	   _energylayer[ hit.id().layer()-1 ] += hit.energy();
-	   int ring = (int)( 10*dist.distance(hit,track)/hgcalFullCellSide );
-	   if( ring<maxTransverseProfile )
-	     _transverseprofile[ring]+=hit.energy();
-	 }
-       }
+      for( std::map<int,std::vector<HGCalHit> >::iterator it=hitMap.begin(); it!=hitMap.end(); ++it ){
+	for( auto hit : it->second ){
+	  _energylayer[ hit.id().layer()-1 ] += hit.energy();
+	  int ring = (int)( 10*dist.distance(hit,track)/hgcalFullCellSide );
+	  if( ring<maxTransverseProfile )
+	    _transverseprofile[ring]+=hit.energy();
+	}
+      }
     }
     outFile.cd();
     outdir->cd();

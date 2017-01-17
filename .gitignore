@@ -1,2 +1,5 @@
 *~
 *.root
+bin
+build
+lib

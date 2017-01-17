@@ -45,13 +45,13 @@ class Distance<S, HGCalTrack>
       d(H,T) = || vec(BH) * u || / || u || where B is a point from the track
     */
 
-    //CLHEP::Hep3Vector H=s.position();
+    CLHEP::Hep3Vector H=s.position();
     
     //B : a track point 
-    //CLHEP::Hep3Vector B=t.vertex();
-    //CLHEP::Hep3Vector u=t.momentum();
-    //CLHEP::Hep3Vector v=B-H;
-    return 0.;//u.mag();//(v.cross(u)).mag()/u.mag();
+    CLHEP::Hep3Vector B=t.vertex();
+    CLHEP::Hep3Vector u=t.momentum();
+    CLHEP::Hep3Vector v=B-H;
+    return (v.cross(u)).mag()/u.mag();
   }
   
   float distanceInLayer(S s,HGCalTrack t)
