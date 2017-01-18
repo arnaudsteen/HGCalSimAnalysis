@@ -1,5 +1,6 @@
 #include "Clustering.h"
 #include <cmath>
+#include <algorithm>
 
 Clustering::Clustering(HexGeom g)
 {

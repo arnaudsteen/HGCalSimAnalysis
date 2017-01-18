@@ -34,8 +34,8 @@ int main(int argc, char **argv)
   tree->Print();
 
   double xBeam, yBeam, zBeam, pBeam;
-  std::vector<unsigned int> *simHitCellIdE;
-  std::vector<double> *simHitCellEnE;
+  std::vector<unsigned int> *simHitCellIdE=0;
+  std::vector<double> *simHitCellEnE=0;
   tree->SetBranchAddress("xBeam",&xBeam);
   tree->SetBranchAddress("yBeam",&yBeam);
   tree->SetBranchAddress("zBeam",&zBeam);
