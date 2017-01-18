@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-//#include <Eigen/Dense>
 
 #include "CLHEP/Vector/ThreeVector.h"
 
@@ -126,45 +125,5 @@ class TrackCleaner
 	cleancol.push_back(*it);
   }
 };
-
-//template <typename T>
-//class PrincipalComponentAnalysis
-//{
-// public : 
-//  PrincipalComponentAnalysis(){;}
-//  ~PrincipalComponentAnalysis(){;}
-//      
-//  Eigen::MatrixXd covarianceMatrix() const {return _covarianceMatrix;};
-//  Eigen::MatrixXd eigenVectors() const {return _eigenVectors;}
-//  std::vector<double> &eigenValues() const {return _eigenValues; }
-// private :
-//  Eigen::MatrixXd _covarianceMatrix;
-//  Eigen::MatrixXd _eigenVectors;
-//  std::vector<double> _eigenValues;
-// public:
-//  void runPCA(T t)
-//  {
-//    covarianceMatrix = Eigen::MatrixXd(t.size(),3);
-//    float x,y,z; x=y=z=0.0;
-//    for( auto p : t ){
-//      x+=p.x();
-//      y+=p.y();
-//      z+=p.z();
-//    }
-//    math::XYZPoint mean=math::XYZPoint(x,y,z)/t.size();
-//    int count=0;
-//    for( auto p : t ){
-//      covarianceMatrix(count,0) = p.x()-mean.x();
-//      covarianceMatrix(count,1) = p.y()-mean.y();
-//      covarianceMatrix(count,2) = p.z()-mean.z();
-//      count++;
-//    }    
-//    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigensolver( _covarianceMatrix.transpose()*_covarianceMatrix );
-//    _eigenVectors=eigensolver.eigenvectors();
-//    for(unsigned int i=0; i<eigensolver.eigenvalues().size(); i++){
-//      _eigenValues.push_back(eigensolver.eigenvalues()[i]);
-//    }
-//  }
-//};
 
 #endif

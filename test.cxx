@@ -153,7 +153,8 @@ int main(int argc, char **argv)
       _dy = yBeam-track.vertex().y();
       Distance<HGCalHit,HGCalTrack> dist;
       for( std::map<int,std::vector<HGCalHit> >::iterator it=hitMap.begin(); it!=hitMap.end(); ++it ){
-	for( auto hit : it->second ){
+	for( std::vector<HGCalHit>::iterator jt=it->second.begin(); jt!=it->second.end(); ++jt ){
+	  HGCalHit hit=(*jt);
 	  _energylayer[ hit.id().layer()-1 ] += hit.energy();
 	  int ring = (int)( 10*dist.distance(hit,track)/hgcalFullCellSide );
 	  if( ring<maxTransverseProfile )

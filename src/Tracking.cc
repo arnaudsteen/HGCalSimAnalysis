@@ -10,13 +10,14 @@ void Tracking::run( HGCalTrack &track, std::vector<HGCalCluster> &clusters )
   std::vector<HGCalCluster> tmp;
   std::vector<HGCalHit> hits;
   std::set<int> touchedLayers;
-  for( auto cluster : clusters ){
+  for( std::vector<HGCalCluster>::const_iterator it=clusters.begin(); it!=clusters.end(); ++it ){
+    HGCalCluster cluster=(*it);
     if( cluster.energy()<settings.minEnergy || cluster.energy()>settings.maxEnergy ) 
       continue;
     tmp.push_back(cluster);
     touchedLayers.insert( cluster.layer() );
-    for( auto hit : cluster.hits() )
-      hits.push_back(hit);
+    for( std::vector<HGCalHit>::const_iterator jt=cluster.hits().begin(); jt!=cluster.hits().end(); ++jt )
+      hits.push_back(*jt);
   }
   if( (int)touchedLayers.size()>settings.minTouchedLayers ){
     WeightedLeastSquare<HGCalCluster> wls;
@@ -34,10 +35,11 @@ void Tracking::run( HGCalTrack &track, std::vector<HGCalCluster> &clusters )
       cleaner.clean( tmp, cleancol, track, settings.maxTransverse );
       touchedLayers.clear();
       hits.clear();
-      for( auto cluster : cleancol ){
+      for( std::vector<HGCalCluster>::const_iterator it=cleancol.begin(); it!=cleancol.end(); ++it ){
+	HGCalCluster cluster=(*it);
       	touchedLayers.insert( cluster.layer() );
-      	for( auto hit : cluster.hits() )
-      	  hits.push_back(hit);
+      	for( std::vector<HGCalHit>::const_iterator jt=cluster.hits().begin(); jt!=cluster.hits().end(); ++jt )
+      	  hits.push_back(*jt);
       }
       if( (int)touchedLayers.size()>settings.minTouchedLayers ){
 	wls.run( cleancol, trackPar, trackParError);
