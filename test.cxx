@@ -23,8 +23,10 @@ int main(int argc, char **argv)
   TFile file(os.str().c_str(),"READ");
   if( file.IsOpen() )
     file.Print();
-  else
+  else{
     std::cout << "can not open " << os.str() << std::endl;
+    return 0;
+  }
   TDirectory * dir = (TDirectory*)file.Get("HGCalTBAnalyzer");
   TTree *tree = (TTree*)dir->Get("HGCTB");
   if (!tree){
@@ -61,7 +63,11 @@ int main(int argc, char **argv)
   float hgcalFullCellSide=0.6493;//cm
   int maxTransverseProfile=250;
   int nlayers=8;
-  int maxEvents=2000;
+  int maxEvents=-1;
+  if( argc>2 )
+    maxEvents=atoi(argv[2]);
+  if( argc>3 )
+    minEnergy=atof(argv[3]);
   
   TrackingParameters m_TrackingParameters;
   m_TrackingParameters.doTrackCleaning=false;
@@ -100,7 +106,7 @@ int main(int argc, char **argv)
   outtree->Branch( "energylayer","std::vector<double>",&_energylayer );
 
   for( unsigned ievt(0); ievt<nEvts; ++ievt ){
-    if( ievt>maxEvents )
+    if( ievt>=maxEvents && maxEvents>=0 )
       break;
     _evtID++;
     _transverseprofile.clear();
